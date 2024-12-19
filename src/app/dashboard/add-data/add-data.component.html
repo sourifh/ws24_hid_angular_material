@@ -1,0 +1,65 @@
+<div class="form-container mat-elevation-z4">
+    <h2 class="mat-headline-5">Zum Kurs anmelden!</h2>
+    
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="registration-form">
+        <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Name eingeben" formControlName="name">
+            <mat-error *ngIf="registrationForm.get('name')?.touched">
+                {{ nameErrorMessage }}
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Geburtsdatum</mat-label>
+            <input matInput [matDatepicker]="picker" 
+                   formControlName="birthdate"
+                   [min]="minDate"
+                   [max]="maxDate"
+                   placeholder="TT.MM.JJJJ">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="registrationForm.get('birthdate')?.touched">
+                {{ birthdateErrorMessage }}
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Kurs auswählen</mat-label>
+            <mat-select formControlName="courseId">
+                <mat-option [value]="">Bitte auswählen</mat-option>
+                <mat-option *ngFor="let course of storeService.courses" [value]="course.id">
+                    {{course.name}}, {{course.instructor}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="registrationForm.get('courseId')?.touched">
+                {{ courseErrorMessage }}
+            </mat-error>
+        </mat-form-field>
+
+        <mat-checkbox formControlName="newsletterOptIn" color="primary" class="newsletter-checkbox">
+            Ich möchte den Newsletter abonnieren und über neue Kursangebote informiert werden
+        </mat-checkbox>
+
+        <div class="form-error" *ngIf="showFormError">
+            Bitte überprüfen Sie Ihre Eingaben und füllen Sie alle erforderlichen Felder aus.
+        </div>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="isSubmitting">
+            <span *ngIf="!isSubmitting">Anmeldung absenden</span>
+            <span *ngIf="isSubmitting" class="button-spinner-container">
+                <mat-spinner diameter="20"></mat-spinner>
+                <span class="ml-2">Wird gespeichert...</span>
+            </span>
+        </button>
+    </form>
+</div>
+
+<!-- Material Notification Popup -->
+<div *ngIf="showSuccessNotification" class="notification-popup mat-elevation-z4">
+    <mat-icon>check_circle</mat-icon>
+    <span>Kursanmeldung erfolgreich!</span>
+    <button mat-icon-button (click)="showSuccessNotification = false">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>

@@ -1,0 +1,45 @@
+<header class="site-header">
+    <div class="header-content">
+        <div class="brand">
+            <h1>{{ title }}</h1>
+            <img [src]="imagePath" alt="logo">
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav class="main-nav d-none d-md-flex">
+            <button mat-button routerLink="/dashboard" routerLinkActive="active">
+                <mat-icon>dashboard</mat-icon>
+                <span>Dashboard</span>
+            </button>
+            <button mat-button routerLink="/add_data" routerLinkActive="active">
+                <mat-icon>add_circle</mat-icon>
+                <span>Add Data</span>
+            </button>
+            <button mat-button routerLink="/about" routerLinkActive="active">
+                <mat-icon>info</mat-icon>
+                <span>About</span>
+            </button>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button mat-icon-button [matMenuTriggerFor]="mobileMenu" class="d-md-none">
+            <mat-icon>menu</mat-icon>
+        </button>
+
+        <!-- Mobile Navigation Menu -->
+        <mat-menu #mobileMenu="matMenu">
+            <button mat-menu-item routerLink="/dashboard">
+                <mat-icon>dashboard</mat-icon>
+                <span>Dashboard</span>
+            </button>
+            <button mat-menu-item routerLink="/add_data">
+                <mat-icon>add_circle</mat-icon>
+                <span>Add Data</span>
+            </button>
+            <button mat-menu-item routerLink="/about">
+                <mat-icon>info</mat-icon>
+                <span>About</span>
+            </button>
+        </mat-menu>
+    </div>
+</header>
