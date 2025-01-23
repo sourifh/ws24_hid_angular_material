@@ -5,6 +5,10 @@ import { Course } from './Interfaces/Course';
 import { Registration } from './Interfaces/Registration';
 import { Observable } from 'rxjs';
 
+/**
+ * Service handling all backend communication for courses and registrations
+ * Manages data fetching, creation and deletion operations
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -12,6 +16,10 @@ export class BackendService {
 
   constructor(private http: HttpClient, private storeService: StoreService) { }
 
+  /**
+   * Fetches all courses with their event locations
+   * Updates the store service with the retrieved data
+   */
   public getCourses() {
       this.http.get<Course[]>('http://localhost:5000/courses?_expand=eventLocation').subscribe(data => {
         this.storeService.courses = data;
@@ -19,6 +27,11 @@ export class BackendService {
       });
   }
 
+  /**
+   * Retrieves paginated registration data
+   * @param page - The page number to fetch
+   * Updates store service with registrations and total count
+   */
   public getRegistrations(page: number) {
 
     const options = {
@@ -35,10 +48,21 @@ export class BackendService {
     });
   }
 
+  /**
+   * Adds a new course registration to the system
+   * @param registration - The registration data to add
+   * @param currentPage - Current page number for refresh
+   * @returns Observable of the post request
+   */
   public addRegistration(registration: any, currentPage: number): Observable<any> {
     return this.http.post('http://localhost:5000/registrations', registration);
   }
 
+  /**
+   * Deletes a course registration from the system
+   * @param registrationId - ID of the registration to delete
+   * @returns Observable of the delete request
+   */
   public deleteRegistration(registrationId: number): Observable<any> {
     return this.http.delete(`http://localhost:5000/registrations/${registrationId}`);
   }
